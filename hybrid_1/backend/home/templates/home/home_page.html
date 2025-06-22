@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}
+  template-homepage
+{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}" />
+  <h1 class="text-center text-primary q-mt-xl">Welcome to My Hybrid Site</h1>
+
+  <div id="q-app"></div>
+  <script type="module" src="{% static 'frontend/assets/index.js' %}"></script>
+{% endblock %}
