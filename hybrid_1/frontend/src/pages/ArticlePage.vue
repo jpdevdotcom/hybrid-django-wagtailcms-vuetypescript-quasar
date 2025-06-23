@@ -15,9 +15,7 @@ interface ArticleItem {
 const articles = ref<ArticleItem[]>([]);
 
 onMounted(async () => {
-  const res = await axios.get(
-    'http://localhost:8000/api/v2/pages/?type=home.ArticlePage&fields=title,intro,body,slug',
-  );
+  const res = await axios.get('http://localhost:8000/api/v2/pages/?type=home.ArticlePage&fields=*');
   articles.value = res.data.items;
 
   console.log(articles.value);
