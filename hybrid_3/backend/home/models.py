@@ -3,6 +3,10 @@ from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import Page
 
+
+class HomePage(Page):
+    pass
+
 class ArticlePage(Page):
     body = StreamField([
         ('heading', blocks.CharBlock(form_classname="full title")),

@@ -1,43 +1,41 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page padding>
+    <div v-for="page in pages" :key="page.id">
+      <h1>{{ page.title }}</h1>
+      <div v-for="block in page.body" :key="block.id">
+        <component :is="resolveBlock(block)" :block="block" />
+      </div>
+    </div>
   </q-page>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import type { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+import { fetchPages } from 'src/services/wagtail';
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
+// Define types for block and page
+type Block = {
+  id: number | string;
+  type: string;
+  // other block fields as needed
+};
 
-const meta = ref<Meta>({
-  totalCount: 1200
+type Page = {
+  id: number | string;
+  title: string;
+  body: Block[];
+  // other page fields as needed
+};
+
+const pages = ref<Page[]>([]);
+
+onMounted(async () => {
+  pages.value = await fetchPages();
 });
+
+function resolveBlock(block: Block) {
+  if (block.type === 'heading') return 'HeadingBlock';
+  if (block.type === 'paragraph') return 'ParagraphBlock';
+  return 'div';
+}
 </script>
